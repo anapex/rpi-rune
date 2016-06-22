@@ -29,13 +29,13 @@ def vol_event(event):
 
 def switch_event(event):
     if event == RotaryEncoder.CLOCKWISE:
-        call(["mpc", "next"], shell=False)
+        call(["mpc", "seek", "+2"], shell=False)
     elif event == RotaryEncoder.ANTICLOCKWISE:
-        call(["mpc", "prev"], shell=False)
+        call(["mpc", "seek", "-2"], shell=False)
     elif event == RotaryEncoder.BUTTONDOWN:
         pass
     elif event == RotaryEncoder.BUTTONUP:
-        call(["mpc", "random"], shell=False)
+        call(["mpc", "next"], shell=False)
     return
 
 # Define the right switch
