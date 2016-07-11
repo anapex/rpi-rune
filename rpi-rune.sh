@@ -2,19 +2,36 @@
 
 # This was based on the rotary encoder test program found at http://www.bobrathbone.com
 
+# Import the modules to send commands to the system and access GPIO pins
+
+import signal
 import sys
 import time
-from rotary_class import RotaryEncoder
-from subprocess import call
+import RPi.GPIO as gpio
 
-# Define GPIO inputs
+from subprocess import call
+from rotary_class import RotaryEncoder
+
+# Define rotary GPIO inputs
 RPIN_A = 24  # Pin 8
 RPIN_B = 25  # Pin 10
 RBUTTON = 23  # Pin 7
+
 LPIN_A = 5  # Pin 8
 LPIN_B = 6  # Pin 10
 LBUTTON = 13  # Pin 7
 
+
+
+# Define a function to keep script running
+def loop():
+    while True:
+        signal.pause()
+
+# Define a function to run when an interrupt is called
+def shutdown(pin):
+    call(["shutdown", "-h", "now"], shell=False)
+    
 # This is the event callback routine to handle events
 def vol_event(event):
     if event == RotaryEncoder.CLOCKWISE:
@@ -38,11 +55,15 @@ def switch_event(event):
         call(["mpc", "next"], shell=False)
     return
 
+# Define shutdown button
+gpio.setmode(gpio.BOARD) # Set pin numbering to board numbering
+gpio.setup(36, gpio.IN, pull_up_down = gpio.PUD_UP) # Set up pin 36 as an input
+gpio.add_event_detect(36, gpio.RISING, callback=shutdown, bouncetime=2000) # Set up an interrupt to look for button presses
+
 # Define the right switch
 rswitch = RotaryEncoder(RPIN_A,RPIN_B,RBUTTON,vol_event)
 
 # Define the left switch
 lswitch = RotaryEncoder(LPIN_A,LPIN_B,LBUTTON,switch_event)
 
-while True:
-    time.sleep(0.5)
+loop() # Run the loop function to keep script running
