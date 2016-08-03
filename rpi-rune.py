@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python2
 
 # This was based on the rotary encoder test program found at http://www.bobrathbone.com
 
