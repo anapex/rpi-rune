@@ -21,7 +21,7 @@ LPIN_A = 5  # Pin 8
 LPIN_B = 6  # Pin 10
 LBUTTON = 13  # Pin 7
 
-PUSH_BUTTON = 36
+PUSH_BUTTON = 26
 
 # Define a function to keep script running
 def loop():
@@ -56,8 +56,8 @@ def switch_event(event):
     return
 
 # Define shutdown button
-gpio.setmode(gpio.BOARD) # Set pin numbering to board numbering
-gpio.setup(PUSH_BUTTON, gpio.IN, pull_up_down = gpio.PUD_UP) # Set up pin 36 as an input
+gpio.setmode(gpio.BCM) # Set pin numbering to bcm numbering
+gpio.setup(PUSH_BUTTON, gpio.IN, pull_up_down = gpio.PUD_UP) # Set up pin 26 as an input
 gpio.add_event_detect(PUSH_BUTTON, gpio.RISING, callback=shutdown, bouncetime=2000) # Set up an interrupt to look for button presses
 
 # Define the right switch
